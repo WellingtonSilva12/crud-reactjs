@@ -20,7 +20,11 @@ function App() {
     }
   })
 
-  return <div className="App">{user ? <Home /> : <Login />}</div>
+  return (
+    <div className="App">
+      {user ? <Home emailUser={user.email} /> : <Login />}
+    </div>
+  )
 }
 
 export default App
