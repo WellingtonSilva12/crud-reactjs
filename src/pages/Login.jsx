@@ -22,7 +22,17 @@ const Login = () => {
       const user = await createUserWithEmailAndPassword(auth, email, password)
     } else {
       // sign in
-      signInWithEmailAndPassword(auth, email, password)
+      signInWithEmailAndPassword(auth, email, password).catch(error => {
+        console.log(error)
+        //error handling
+        if (error.code === 'auth/wrong-password') {
+          return alert('E-mail ou Senha inválida.')
+        }
+        if (error.code === 'auth/user-not-found') {
+          return alert('E-mail ou Senha inválida.')
+        }
+        return alert('Não foi possivel acessar.')
+      })
     }
   }
 
