@@ -1,25 +1,23 @@
 import React from 'react'
+
 import firebaseApp from '../services/firebase-config'
 import { getAuth, signOut } from 'firebase/auth'
+import { Button, Container } from 'react-bootstrap'
 
 const auth = getAuth(firebaseApp)
 
 const Home = () => {
   //function handleSignOut
   const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        alert('SignOut successful')
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    signOut(auth).catch(error => {
+      console.log(error)
+    })
   }
   return (
-    <div>
+    <Container>
       <h1>Home</h1>
-      <button onClick={handleSignOut}>Sair</button>
-    </div>
+      <Button onClick={handleSignOut}>Sair</Button>
+    </Container>
   )
 }
 

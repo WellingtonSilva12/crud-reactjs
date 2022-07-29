@@ -5,13 +5,18 @@ import firebaseApp from '../services/firebase-config'
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider
 } from 'firebase/auth'
+
 const auth = getAuth(firebaseApp)
+const provider = new GoogleAuthProvider()
 
 const Login = () => {
   const [authUser, setAuthUser] = useState(false)
 
+  //login with email and password
   const handleSubmit = async e => {
     e.preventDefault()
     const email = e.target.formBasicEmail.value
@@ -19,12 +24,24 @@ const Login = () => {
 
     if (authUser) {
       // create acount
-      const user = await createUserWithEmailAndPassword(auth, email, password)
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      ).catch(error => {
+        console.log(error)
+        if (password.length < 6) {
+          return alert('A senha deve possuir pelo menos 6 caracteres.')
+        }
+      })
     } else {
       // sign in
       signInWithEmailAndPassword(auth, email, password).catch(error => {
         console.log(error)
         //error handling
+        if (error.code === 'auth/invalid-email') {
+          return alert('E-mail inválido')
+        }
         if (error.code === 'auth/wrong-password') {
           return alert('E-mail ou Senha inválida.')
         }
@@ -34,6 +51,22 @@ const Login = () => {
         return alert('Não foi possivel acessar.')
       })
     }
+  }
+
+  // login with google account
+  const handleSubmitGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then(result => {
+        const credential = GoogleAuthProvider.credentialFromResult(result)
+        const token = credential.accessToken
+        const user = result.user
+      })
+      .catch(error => {
+        const errorCode = error.code
+        const errorMessage = error.message
+        const email = error.customData.email
+        const credential = GoogleAuthProvider.credentialFromError(error)
+      })
   }
 
   return (
@@ -58,7 +91,12 @@ const Login = () => {
             {authUser ? 'Cadastrar' : 'Login'}
           </Button>
         </Form>
-        <Button variant="primary" type="submit" style={{ width: '300px' }}>
+        <Button
+          variant="primary"
+          type="submit"
+          style={{ width: '300px' }}
+          onClick={handleSubmitGoogle}
+        >
           Entrar com Google
         </Button>
         <Button
