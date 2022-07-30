@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import AddService from '../components/AddService'
 import ListService from '../components/ListService'
 
 import firebaseApp from '../services/firebase-config'
 import { getAuth, signOut } from 'firebase/auth'
-import { getFirestore, doc, getDoc } from 'firebase/firestore'
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 
 import { Button, Container } from 'react-bootstrap'
 
@@ -12,6 +12,8 @@ const auth = getAuth(firebaseApp)
 const firestore = getFirestore(firebaseApp)
 
 const Home = ({ emailUser }) => {
+  const [arrayService, setArrayService] = useState(null)
+
   const fakeData = [
     {
       id: 1,
@@ -41,11 +43,24 @@ const Home = ({ emailUser }) => {
     // check if exist
     if (query.exists()) {
       const infoDoc = query.data()
-
       return infoDoc.service
     } else {
+      await setDoc(docRef, { service: [...fakeData] })
+      const query = await getDoc(docRef)
+      const infoDoc = query.data()
+      return infoDoc.service
     }
   }
+
+  useEffect(() => {
+    const fetchService = async () => {
+      const servicesClosed = await findDocCreateDoc(emailUser)
+
+      setArrayService(servicesClosed)
+    }
+
+    fetchService()
+  }, [])
 
   //function handleSignOut
   const handleSignOut = () => {
@@ -60,7 +75,13 @@ const Home = ({ emailUser }) => {
       <hr />
 
       {/* <AddService /> */}
-      <ListService arrayService={fakeData} />
+      {arrayService ? (
+        <ListService
+          arrayService={arrayService}
+          setArrayService={setArrayService}
+          emailUser={emailUser}
+        />
+      ) : null}
     </Container>
   )
 }
