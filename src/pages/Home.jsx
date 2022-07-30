@@ -71,10 +71,19 @@ const Home = ({ emailUser }) => {
   return (
     <Container>
       <h1>Home</h1>
-      <Button onClick={handleSignOut}>Sair</Button>
+      <Button className="m-1">Cadastrar</Button>
+
+      <Button variant="dark" onClick={handleSignOut}>
+        Sair
+      </Button>
       <hr />
 
-      {/* <AddService /> */}
+      <AddService
+        arrayService={arrayService}
+        setArrayService={setArrayService}
+        emailUser={emailUser}
+      />
+
       {arrayService ? (
         <ListService
           arrayService={arrayService}

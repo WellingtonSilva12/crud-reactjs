@@ -30,18 +30,21 @@ const ListService = ({ arrayService, emailUser, setArrayService }) => {
           return (
             <>
               <Row>
-                <Col>{objectService.description}</Col>
+                {/* <Col>{objectService.description}</Col> */}
 
-                <Col>
-                  <Button>Ver Arquivo</Button>
-                </Col>
-
-                <Col>
-                  <Button onClick={() => deleteService(objectService.id)}>
-                    Apagar
-                  </Button>
-                </Col>
+                <Row>
+                  <Col>{objectService.client}</Col>
+                  <Col>{objectService.contact}</Col>
+                  <Col>
+                    <Button onClick={() => deleteService(objectService.id)}>
+                      Apagar
+                    </Button>
+                  </Col>
+                </Row>
+                <Col>{objectService.office}</Col>
+                <Col>{objectService.price}</Col>
               </Row>
+              <Col>{objectService.description}</Col>
               <hr />
             </>
           )
