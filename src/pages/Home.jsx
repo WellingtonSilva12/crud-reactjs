@@ -7,11 +7,12 @@ import { getAuth, signOut } from 'firebase/auth'
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 
 import { Button, Container } from 'react-bootstrap'
+import ListServiceDetails from '../components/ListServiceDetails'
 
 const auth = getAuth(firebaseApp)
 const firestore = getFirestore(firebaseApp)
 
-const Home = ({ emailUser }) => {
+const Home = ({ emailUser, pageRegister }) => {
   const [arrayService, setArrayService] = useState(null)
 
   const fakeData = [
@@ -69,29 +70,33 @@ const Home = ({ emailUser }) => {
     })
   }
   return (
-    <Container>
-      <h1>Home</h1>
-      <Button className="m-1">Cadastrar</Button>
+    <>
+      <Container>
+        <h1>Home</h1>
+        <Button className="m-1" onClick={pageRegister}>
+          Cadastrar
+        </Button>
 
-      <Button variant="dark" onClick={handleSignOut}>
-        Sair
-      </Button>
-      <hr />
+        <Button variant="dark" onClick={handleSignOut}>
+          Sair
+        </Button>
+        <hr />
 
-      <AddService
-        arrayService={arrayService}
-        setArrayService={setArrayService}
-        emailUser={emailUser}
-      />
-
-      {arrayService ? (
-        <ListService
+        <AddService
           arrayService={arrayService}
           setArrayService={setArrayService}
           emailUser={emailUser}
         />
-      ) : null}
-    </Container>
+
+        {arrayService ? (
+          <ListService
+            arrayService={arrayService}
+            setArrayService={setArrayService}
+            emailUser={emailUser}
+          />
+        ) : null}
+      </Container>
+    </>
   )
 }
 

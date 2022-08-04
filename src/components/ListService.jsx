@@ -24,7 +24,7 @@ const ListService = ({ arrayService, emailUser, setArrayService }) => {
   return (
     <Container>
       <Stack>
-        <h1>List Service</h1>
+        <h1>Lista de Serviços</h1>
 
         {arrayService.map(objectService => {
           return (
@@ -33,18 +33,25 @@ const ListService = ({ arrayService, emailUser, setArrayService }) => {
                 {/* <Col>{objectService.description}</Col> */}
 
                 <Row>
-                  <Col>{objectService.client}</Col>
-                  <Col>{objectService.contact}</Col>
+                  <Col>
+                    <h6>Nome:</h6> <p>{objectService.client}</p>
+                  </Col>
+                  <Col>
+                    <h6>Telefone:</h6>
+                    <p>{objectService.contact}</p>
+                  </Col>
                   <Col>
                     <Button onClick={() => deleteService(objectService.id)}>
                       Apagar
                     </Button>
                   </Col>
                 </Row>
-                <Col>{objectService.office}</Col>
-                <Col>{objectService.price}</Col>
               </Row>
-              <Col>{objectService.description}</Col>
+              <Col>
+                <h6>Serviço:</h6>
+                <p>{objectService.office}</p>
+              </Col>
+
               <hr />
             </>
           )

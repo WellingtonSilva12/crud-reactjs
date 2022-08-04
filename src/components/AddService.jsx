@@ -15,22 +15,34 @@ import { getFirestore, updateDoc, doc } from 'firebase/firestore'
 const firestore = getFirestore(firebaseApp)
 
 const AddService = ({ emailUser, setArrayService, arrayService }) => {
-  let urlDescarga = 'https://picsum.photos/422'
-
   async function handleSubmitRegister(e) {
     e.preventDefault()
-    const description = e.target.formDescription.value
     const client = e.target.formClient.value
     const contact = e.target.formContact.value
+    const office = e.target.formOffice.value
+    const sale = e.target.formSale.value
+    const value = e.target.formValue.value
+    const description = e.target.formDescription.value
+    const adress = e.target.formAdress.value
+    const date_request = e.target.formDateRequest.value
+    const date_delivery = e.target.formDateDelivery.value
+    const status = e.target.formStatus.value
+
     // crear nuevo array de tareas
     const newArrayService = [
       ...arrayService,
       {
         client: client,
         contact: contact,
-        id: +new Date(),
+        office: office,
+        sale: sale,
+        value: value,
         description: description,
-        url: urlDescarga
+        adress: adress,
+        date_request: date_request,
+        date_delivery: date_delivery,
+        status: status,
+        id: +new Date()
       }
     ]
     // actualizar base de datos
@@ -39,9 +51,16 @@ const AddService = ({ emailUser, setArrayService, arrayService }) => {
     //actualizar estado
     setArrayService(newArrayService)
     // limpiar form
-    e.target.formDescription.value = ''
     e.target.formClient.value = ''
     e.target.formContact.value = ''
+    e.target.formOffice.value = ''
+    e.target.formSale.value = 'Vendas:'
+    e.target.formValue.value = ''
+    e.target.formDescription.value = ''
+    e.target.formAdress.value = ''
+    e.target.formDateRequest.value = ''
+    e.target.formDateDelivery.value = ''
+    e.target.formStatus.value = 'Status de Produção'
   }
 
   return (
@@ -66,62 +85,60 @@ const AddService = ({ emailUser, setArrayService, arrayService }) => {
           </Row>
           <Row>
             <Col style={{ marginBottom: '10px' }}>
-              <Form.Control type="text" placeholder="Serviço" />
+              <Form.Control type="text" placeholder="Serviço" id="formOffice" />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Select className="mb-2" id="formSale">
+                <option>Vendas:</option>
+                <option value="Site">Site</option>
+                <option value="Shopee">Shopee</option>
+                <option value="Whatsapp">Whatsapp</option>
+                <option value="Presencial">Presencial</option>
+              </Form.Select>
             </Col>
             <Col className="mb-2">
-              <Form.Control type="text" placeholder="Valor" />
+              <Form.Control type="text" placeholder="Valor" id="formValue" />
             </Col>
           </Row>
 
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Row>
-              <Col>
-                <FormLabel>Vendas:</FormLabel>
-              </Col>
-              <Col>
-                <Form.Check type="checkbox" label="Site" />
-              </Col>
-              <Col>
-                <Form.Check type="checkbox" label="Shopee" />
-              </Col>
-              <Col>
-                <Form.Check type="checkbox" label="Whatsapp" />
-              </Col>
-            </Row>
-          </Form.Group>
-
-          <Row className="mb-2">
+          <Row className="m-1">
             <Form.Control
               type="text"
               placeholder="Descrição do serviço"
               id="formDescription"
             />
           </Row>
-          <Row className="mb-2 m-lg-3">
-            <Form.Control type="text" placeholder="Endereço" />
+          <Row className="m-1">
+            <Form.Control type="text" placeholder="Endereço" id="formAdress" />
           </Row>
           <Row>
-            <Col className="mb-2">
-              <Form.Control type="text" placeholder="Data do pedido" />
+            <Col className="m-1">
+              <Form.Control
+                type="text"
+                placeholder="Data do pedido"
+                id="formDateRequest"
+              />
             </Col>
             <Col className="mb-4">
-              <Form.Control type="text" placeholder="Data da entrega" />
+              <Form.Control
+                type="text"
+                placeholder="Data da entrega"
+                id="formDateDelivery"
+              />
             </Col>
             <Row>
               <Col>
-                <FormLabel>Status:</FormLabel>
-              </Col>
-              <Col>
-                <Form.Check type="checkbox" label="Arte" />
-              </Col>
-              <Col>
-                <Form.Check type="checkbox" label="Produção" />
-              </Col>
-              <Col>
-                <Form.Check type="checkbox" label="Feito" />
-              </Col>
-              <Col>
-                <Form.Check type="checkbox" label="Entregue" />
+                <Form.Select className="mb-2" id="formStatus">
+                  <option>Status de Produção:</option>
+                  <option value="Criação de Arte">Criação de Arte</option>
+                  <option value="Produção do Material">
+                    Produção do Material
+                  </option>
+                  <option value="Material Feito">Material Feito</option>
+                  <option value="Entregue">Entregue</option>
+                </Form.Select>
               </Col>
             </Row>
           </Row>
